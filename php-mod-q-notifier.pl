@@ -2,15 +2,19 @@
  
 use DBI;
  
+# forked : https://github.com/digitalcardboard/phpbb-mod-q-notifier
 # origin : http://www.phpbb.com/community/viewtopic.php?f=72&t=832195&start=15
  
-# The next six lines are the only ones you should need to change. 
-$database_name = ""; # your database name, the same one phpBB uses
-$database_username = ""; # your database username, the same one phpbB uses
-$database_password = ""; # your data base password, the same one phpBB uses
-$forum_address = ""; # http://www.example.com/forums
-$to=''; # email to address
-$from= ''; # email from address
+# The next nine lines are the only ones you should need to change. 
+$database_host =        ""; # your database host, the same on phpBB uses
+$database_port =        ""; # your database port, the same one phpBB uses
+$database_name =        ""; # your database name, the same one phpBB uses
+$database_username =    ""; # your database username, the same one phpbBB uses
+$database_password =    ""; # your data base password, the same one phpBB uses
+$table_prefix =         ""
+$forum_address =        ""; # http://www.example.com/forums
+$to =                   ""; # email to address
+$from =                 ""; # email from address
  
 # optional changes
 $subject='PHPBB moderation required';
@@ -22,8 +26,10 @@ $post_report_count = 0;
  
 open FILE, ">", $queue_file or die $!;
  
+# ---------------------------------------------------------
 # No changes below this line.
-$database_name = "dbi:mysql:".$database_name;
+# ---------------------------------------------------------
+$database_name = "dbi:mysql:$database_name:$database_host";
 $dbh = DBI->connect($database_name,$database_username,$database_password);
  
 # Check for Posts Needing Approval
@@ -108,7 +114,12 @@ if ($mod_total >0 && $mod_total != $last_mod_total) {
  
   # silence is best here if we are running this from the crontab
   # as output gets forwarded to the machine admin.
-  #print "A message has been sent from $from to $to\n";
+  # run script with '-d' parameter to force output
+    if ( $ARGV[0] eq "-d" ) {
+      print "A message has been sent from $from to $to\n";
+    }
 } else {
-  #print "Moderation queue is empty\n";
+    if ( $ARGV[0] eq "-d" ) {
+        print "Moderation queue is empty\n";
+    }
 }
