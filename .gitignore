@@ -1,1 +1,3 @@
 *.swp
+*.tmp
+check_moderator_count.txt

@@ -13,17 +13,35 @@ general needs.
 Instructions
 ------------
 
-Clone repo or 'wget https://raw.github.com/digitalcardboard/phpbb-mod-q-notifier/master/php-mod-q-notifier.pl' and place on your webserver, outside of the webroot.
+Clone repo or 'wget https://raw.github.com/digitalcardboard/phpbb-mod-q-notifier/master/phpbb-mod-q-notifier.pl' and place on your webserver, outside of the webroot.
 
-Open script with your favorite text editor and make the appropriate
-variables changes. Refer to the config.php file in your PhpBB directory,
-if necessary.
+chmod +x phpbb-mod-q-notifier.pl to set executable.
 
-chmod +x php-mod-q-notifier.pl to set executable.
+This fork uses command line parameters instead of editing the script directly,
+so you'll run it like this:
+
+> ./phpbb-mod-q-notifier.pl --username=USERNAME --password=PASSWORD --db=DATABASE --url=http://yourforum.com/ --to=email@domain.com --from=email@domain.com
+
+Refer to the config.php file in your PhpBB directory if you need to find 
+the necessary parameters.
 
 Cron it up to run as often as you deem necessary. An hour seems decent.
 
 For use on Dreamhost, refer to http://wiki.dreamhost.com/Crontab
 See the specific info on calling the entire path to perl.
 
-Run script with '-d' parameter to force a tiny amount of debug output.
+Options
+-------
+
+    -d, --debug                 (optional) force a tiny amount of debug output
+    -e, --email                 (optional) force email to send regardless of moderation queue, for testing
+    -h, --host=HOSTNAME         (optional) database host, defaults to localhost if not provided
+    -o, --port=PORT             (optional) database port, defaults 3306 if not provided
+    -u, --username=USERNAME     database username
+    -p, --username=PASSWORD     database password
+        --db=DATABASE           database name
+    -t, --table-prefix=PREFIX   (optional) table prefix
+        --url=URL               path to your forum
+        --to=EMAIL              to email address
+        --from=EMAIL            from email address
+
